@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/elso"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableEnd="@mipmap/ic_launcher"
         android:drawableStart="@mipmap/ic_launcher"
@@ -22,8 +22,8 @@
         android:text="Hello World!" />
 
     <Button
-        android:id="@+id/elso"
-        android:layout_width="match_parent"
+        android:id="@+id/masodik"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ádám"
         />
