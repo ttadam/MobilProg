@@ -7,23 +7,16 @@
     tools:context="com.mobilprog.tadam.mobilprog.MainActivity">
 
     <Button
-        android:id="@+id/elso"
+        android:id="@+id/Tibor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableEnd="@mipmap/ic_launcher"
-        android:drawableStart="@mipmap/ic_launcher"
-        android:text="elsogomb"
-
+        android:text="Tibor"
+        android:layout_below="@+id/Adam"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <Button
-        android:id="@+id/masodik"
-        android:layout_width="wrap_content"
+        android:id="@+id/Adam"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ádám"
         />
