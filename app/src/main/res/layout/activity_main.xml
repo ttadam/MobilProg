@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:drawableEnd="@mipmap/ic_launcher"
         android:drawableStart="@mipmap/ic_launcher"
-        android:text="@string/elsogomb"
+        android:text="elsogomb"
 
         />
 
