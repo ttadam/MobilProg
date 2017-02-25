@@ -10,7 +10,7 @@
         android:id="@+id/Tibor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tibor"
+        android:text="@string/tibor"
         android:layout_below="@+id/Adam"
         />
 
@@ -18,7 +18,15 @@
         android:id="@+id/Adam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ádám"
+        android:text="@string/adam"
+        />
+
+    <Button
+        android:id="@+id/Martin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Tibor"
+        android:text="@string/martin"
         />
 
 </RelativeLayout>
