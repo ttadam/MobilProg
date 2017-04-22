@@ -20,7 +20,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/typr_logo" />
+            android:src="@drawable/ic_typer_white_logo" />
 
         <!-- Email Label -->
         <EditText
