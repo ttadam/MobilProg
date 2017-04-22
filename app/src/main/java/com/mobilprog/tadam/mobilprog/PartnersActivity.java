@@ -44,7 +44,15 @@ public class PartnersActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.partners_listview);
         listView.setAdapter(partnersAdapter);
 
-        
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Partners selectedNews = partnersAdapter.getItem(i);
+                Intent intent = new Intent(PartnersActivity.this, MessagesActivity.class);
+                intent.putExtra("selected_news", selectedNews);
+                startActivity(intent);
+            }
+        });
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
