@@ -43,6 +43,8 @@ public class PartnersActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.partners_listview);
         listView.setAdapter(partnersAdapter);
+
+        
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
