@@ -6,27 +6,32 @@
     android:layout_height="match_parent"
     tools:context="com.mobilprog.tadam.mobilprog.MainActivity">
 
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/login_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="35sp"
+        android:layout_marginTop="150dp"
+        android:text="Bejelentkezés"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_label"
+        android:textAlignment="center"
+        android:hint="felhasználónév" />
+
     <Button
         android:id="@+id/Tibor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tibor"
-        android:layout_below="@+id/Adam"
+        android:text="login"
+        android:layout_below="@+id/user_name"
+        android:layout_centerHorizontal="true"
         />
 
-    <Button
-        android:id="@+id/Adam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/adam"
-        />
-
-    <Button
-        android:id="@+id/Martin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Tibor"
-        android:text="@string/martin"
-        />
 
 </RelativeLayout>
