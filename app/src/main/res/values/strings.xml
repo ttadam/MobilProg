@@ -17,4 +17,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Array resource related to hamburger options -->
+    <string-array name="options_array">
+        <item>Adatlap</item>
+        <item>Partnerek</item>
+        <item>Beállítások</item>
+        <item>Kilépés</item>
+    </string-array>
 </resources>
