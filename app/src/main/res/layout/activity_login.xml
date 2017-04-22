@@ -15,11 +15,12 @@
         android:paddingTop="56dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/typr_logo" />
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_typer_white_logo" />
 
         <!-- Email Label -->
         <EditText
