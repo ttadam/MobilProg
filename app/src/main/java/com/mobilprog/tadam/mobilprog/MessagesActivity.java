@@ -11,5 +11,10 @@ public class MessagesActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+
+
+        Partners selectedPartner = getIntent().getExtras().getParcelable("selected_partner");
+        if (selectedPartner != null)
+            setTitle(selectedPartner.getName());
     }
 }

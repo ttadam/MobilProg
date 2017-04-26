@@ -2,7 +2,6 @@ package com.mobilprog.tadam.mobilprog;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -38,11 +37,16 @@ public class AsyncCallWS extends AsyncTask<Void, Void, Void> {
         String METHOD_NAME = "PartnersList";
         String NAMESPACE = "http://tempuri.org/ITyprXService/";
         String URL = "http://typr.cloudapp.net:8080/Typrserver";
+        //String URL = "http://tempuri.org/ITyprXService";
+        //String URL = "http://127.0.0.1:1334/Design_Time_Addresses/TyprX.Service/TyprXService/";
 
         try {
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-            request.addProperty("UserId" ,"a4525d29e7d7486997511948b9b5a4d4");
-
+            PropertyInfo propertyInfo = new PropertyInfo();
+            propertyInfo.setName("parameters");
+            propertyInfo.setValue("a4525d29e7d7486997511948b9b5a4d4");
+            request.addProperty(propertyInfo);
+            //request.addProperty("parameters", "a4525d29e7d7486997511948b9b5a4d4");
 
             SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             soapEnvelope.dotNet = true;
@@ -51,9 +55,14 @@ public class AsyncCallWS extends AsyncTask<Void, Void, Void> {
             HttpTransportSE transport = new HttpTransportSE(URL);
 
             transport.call(SOAP_ACTION, soapEnvelope);
+            Log.i(TAG, "Request: " + request);
             resultString = (SoapPrimitive) soapEnvelope.getResponse();
 
-            Log.i(TAG, "Result Celsius: " + resultString);
+            Log.i(TAG, "Result: " + resultString);
+
+
+
+
         } catch (Exception ex) {
             Log.e(TAG, "Error: " + ex.getMessage());
         }

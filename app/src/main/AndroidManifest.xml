@@ -29,7 +29,8 @@
             android:label="Partners" />
         <activity
             android:name=".RegistrationActivity"
-            android:theme="@style/AppThemeNoAcBar" />
+            android:theme="@style/AppThemeNoAcBar"
+            android:label="Registration"/>
         <activity android:name=".MessagesActivity"></activity>
         
     </application>
