@@ -15,6 +15,14 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
+import com.mobilprog.tadam.mobilprog.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +34,16 @@ public class PartnersActivity extends AppCompatActivity {
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private String activityTitle;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partners);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         Button downloadPartners = (Button) findViewById(R.id.partners_download);
         downloadPartners.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +107,32 @@ public class PartnersActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        createUser(user);
+
+    }
+
+    private void createUser(FirebaseUser user) {
+        final DatabaseReference usersRef = mFirebaseDatabase.getReference(MyFirebaseDataBase.USER_DB);
+        final String email = User.encodeEmail(user.getEmail());
+        final DatabaseReference userRef = usersRef.child(User.encodeEmail(email));
+        final String username = user.getDisplayName();
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    User newUser = new User(username, User.encodeEmail(email));
+                    userRef.setValue(newUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
