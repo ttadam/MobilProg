@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +142,7 @@ public class PartnersActivity extends AppCompatActivity {
                 case 2:
                     return;
                 case 3:
+                    FirebaseAuth.getInstance().signOut();
                     newScreen = new Intent(PartnersActivity.this, MainActivity.class);
             }
             if (newScreen != null)
