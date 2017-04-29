@@ -13,12 +13,6 @@
         android:orientation="vertical"
         tools:context="com.mobilprog.tadam.mobilprog.PartnersActivity">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/partners_download"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Partner betöltés" />
-
         <ListView
             android:id="@+id/partners_listview"
             android:layout_width="match_parent"
