@@ -8,12 +8,12 @@
     tools:context="com.mobilprog.tadam.mobilprog.MessagesActivity">
 
 
-    <ImageView
-        android:id="@+id/sender_button"
+    <ImageButton
+        android:id="@+id/sendButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/input_message"
+        android:layout_alignTop="@+id/messageToSend"
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="12dp"
         android:src="@drawable/ic_send_black_24dp"
@@ -21,21 +21,25 @@
         tools:layout_editor_absoluteY="400dp" />
 
     <ListView
-        android:id="@+id/show_messages"
-        android:layout_width="wrap_content"
-        android:layout_height="443dp"
+        android:id="@+id/messageListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="1dp" />
+        tools:layout_editor_absoluteY="1dp"
+        android:transcriptMode="alwaysScroll"
+        tools:listitem="@layout/one_message_item"
+        android:layout_above="@+id/sendButton" />
+
 
     <EditText
-        android:id="@+id/input_message"
+        android:id="@+id/messageToSend"
         android:layout_width="318dp"
         android:layout_height="44dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/sender_button"
+        android:layout_toStartOf="@+id/sendButton"
         android:hint="Type your message here..."
         android:inputType="textShortMessage"
         android:textColorHint="@android:color/black"
