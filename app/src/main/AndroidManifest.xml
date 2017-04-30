@@ -33,7 +33,12 @@
             android:theme="@style/AppThemeNoAcBar"
             android:label="Registration"/>
         <activity android:name=".MessagesActivity"></activity>
+        <activity
+            android:name=".AllPeopleListActivity"
+            android:label="Find Friends"
+            android:theme="@style/AppThemeNoAcBar.NoActionBar">
 
+        </activity>
 
     </application>
 

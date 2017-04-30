@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Intent intent = new Intent(MainActivity.this, PartnersActivity.class);
+            //Intent intent = new Intent(MainActivity.this, AllPeopleListActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Nem sikerült a Login", Toast.LENGTH_SHORT).show();

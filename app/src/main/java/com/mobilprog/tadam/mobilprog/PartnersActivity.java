@@ -261,12 +261,17 @@ public class PartnersActivity extends AppCompatActivity {
                     return;
                 case 1:
                     newScreen = new Intent(PartnersActivity.this, PartnersActivity.class);
-                case 2:
-                    return;
+                    //  case 2:
+                    //   newScreenAll = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
+                    //   return;
                 case 3:
                     FirebaseAuth.getInstance().signOut();
                     newScreen = new Intent(PartnersActivity.this, MainActivity.class);
+
             }
+            if (position == 2)
+                newScreen = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
+
             if (newScreen != null)
                 startActivity(newScreen);
 
