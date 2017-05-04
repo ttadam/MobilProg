@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (!task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Something went wrong while login, please try again later!", Toast.LENGTH_LONG).show();
+                        Log.d("MainActivity", "Error: " + task.getException());
+                        Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
