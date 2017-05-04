@@ -18,10 +18,10 @@
         android:theme="@style/AppThemeMain">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeNoAcBar">
+            android:theme="@style/AppThemeNoAcBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,9 +30,12 @@
             android:label="Partners" />
         <activity
             android:name=".RegistrationActivity"
+            android:label="Registration"
             android:theme="@style/AppThemeNoAcBar"
-            android:label="Registration"/>
-        <activity android:name=".MessagesActivity"></activity>
+            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".MessagesActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".AllPeopleListActivity"
             android:label="Find Friends"
