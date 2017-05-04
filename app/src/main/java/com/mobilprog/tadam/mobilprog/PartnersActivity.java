@@ -133,24 +133,6 @@ public class PartnersActivity extends AppCompatActivity {
                 .child(MyFirebaseDataBase.USER_DB);
 
 
-        List<Partners> items = new ArrayList<>();
-
-        final PartnersAdapter partnersAdapter = new PartnersAdapter(items);
-
-        ListView listView = (ListView) findViewById(R.id.partners_listview);
-        listView.setAdapter(partnersAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Partners selectedPartner = partnersAdapter.getItem(i);
-                Intent intent = new Intent(PartnersActivity.this, MessagesActivity.class);
-                intent.putExtra("selected_partner", selectedPartner);
-                startActivity(intent);
-            }
-        });
-
-
         //Initialize screen variables
         mChatListView = (ListView) findViewById(R.id.partners_listview);
 
@@ -258,19 +240,19 @@ public class PartnersActivity extends AppCompatActivity {
             Intent newScreen = null;
             switch (position) {
                 case 0:
-                    return;
+                    break;
                 case 1:
                     newScreen = new Intent(PartnersActivity.this, PartnersActivity.class);
-                    //  case 2:
-                    //   newScreenAll = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
-                    //   return;
+                    break;
+                case 2:
+                   newScreen = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
+                    break;
                 case 3:
                     FirebaseAuth.getInstance().signOut();
                     newScreen = new Intent(PartnersActivity.this, MainActivity.class);
+                    break;
 
             }
-            if (position == 2)
-                newScreen = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
 
             if (newScreen != null)
                 startActivity(newScreen);
