@@ -20,6 +20,12 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
+
+    private Button registButton;
+    private EditText inputUsernameEditText;
+    private EditText inputEmailEditText;
+    private EditText passwordEditText;
+
     // Declareauth
     private FirebaseAuth mAuth;
 
@@ -29,18 +35,22 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         mAuth = FirebaseAuth.getInstance();
-        Button registButton = (Button) findViewById(R.id.btn_regist);
+        registButton = (Button) findViewById(R.id.btn_regist);
         // EditText userEditText = (EditText) findViewById(R.id.input_email);
         // final String userName = userEditText.getText().toString();
 
         registButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final EditText inputEmailEditText = (EditText) findViewById(R.id.input_email);
-                final EditText passwordEditText = (EditText) findViewById(R.id.input_password);
-                final String userName = inputEmailEditText.getText().toString().trim();
-                final String password = passwordEditText.getText().toString().trim();
-                mAuth.createUserWithEmailAndPassword(userName, password)
+                inputUsernameEditText = (EditText) findViewById(R.id.input_username);
+                inputEmailEditText = (EditText) findViewById(R.id.input_email);
+                passwordEditText = (EditText) findViewById(R.id.input_password);
+
+                String username = inputEmailEditText.getText().toString().trim();
+                String email = inputUsernameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+
+                mAuth.createUserWithEmailAndPassword(username, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {

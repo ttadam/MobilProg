@@ -1,4 +1,4 @@
-package com.mobilprog.tadam.mobilprog;
+package com.mobilprog.tadam.mobilprog.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

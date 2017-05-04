@@ -1,7 +1,5 @@
 package com.mobilprog.tadam.mobilprog;
 
-import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +8,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.mobilprog.tadam.mobilprog.Model.Partners;
 
 import java.util.List;
 

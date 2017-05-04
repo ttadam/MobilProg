@@ -14,7 +14,7 @@
         android:paddingRight="24dp"
         android:paddingTop="56dp">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -23,38 +23,25 @@
             android:src="@drawable/ic_typer_white_logo" />
 
         <!-- Email Label -->
-
-
-        <android.support.design.widget.TextInputLayout
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="#FFFFFF">
-
-            <EditText
-                android:id="@+id/input_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@android:color/white" />
 
         <!-- Password Label -->
-        <android.support.design.widget.TextInputLayout
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:textColorHint="@android:color/white">
-
-            <EditText
-                android:id="@+id/input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@android:color/white" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
@@ -67,7 +54,7 @@
             android:text="Login"
             android:textColor="#FFFFFF" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/link_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
