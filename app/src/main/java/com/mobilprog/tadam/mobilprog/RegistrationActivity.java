@@ -1,21 +1,22 @@
 package com.mobilprog.tadam.mobilprog;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
+import com.mobilprog.tadam.mobilprog.Model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -26,60 +27,68 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText inputEmailEditText;
     private EditText passwordEditText;
 
-    // Declareauth
-    private FirebaseAuth mAuth;
+    // Declare Firebase Authentication
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseReference;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        mAuth = FirebaseAuth.getInstance();
+        // Init firebase auth and database references
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        // Databasereference to the child users of the root
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(MyFirebaseDataBase.USER_DB);
+
+        progressDialog = new ProgressDialog(this);
+
         registButton = (Button) findViewById(R.id.btn_regist);
-        // EditText userEditText = (EditText) findViewById(R.id.input_email);
-        // final String userName = userEditText.getText().toString();
+        inputUsernameEditText = (EditText) findViewById(R.id.input_username);
+        inputEmailEditText = (EditText) findViewById(R.id.input_email);
+        passwordEditText = (EditText) findViewById(R.id.input_password);
 
         registButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputUsernameEditText = (EditText) findViewById(R.id.input_username);
-                inputEmailEditText = (EditText) findViewById(R.id.input_email);
-                passwordEditText = (EditText) findViewById(R.id.input_password);
-
-                String username = inputEmailEditText.getText().toString().trim();
-                String email = inputUsernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
-
-                mAuth.createUserWithEmailAndPassword(username, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegistrationActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
-                                }
-
-                                // ...
-                            }
-                        });
+                // Start registration
+                startRegistration();
             }
         });
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "Nem sikerült a Reg", Toast.LENGTH_SHORT).show();
+    /**
+     * Registration method with user creation to FireBaseDatabase
+     */
+    private void startRegistration() {
+        final String username = inputUsernameEditText.getText().toString().trim();
+        final String email = inputEmailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+
+            progressDialog.setMessage("Signing up...");
+            progressDialog.show();
+
+            mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+
+                        String userId = mFirebaseAuth.getCurrentUser().getUid();
+                        DatabaseReference currentUser = mDatabaseReference.child(userId);
+                        User user = new User(username, email);
+                        currentUser.setValue(user);
+
+                        progressDialog.dismiss();
+
+                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
         }
     }
 }

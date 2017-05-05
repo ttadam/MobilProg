@@ -1,5 +1,6 @@
 package com.mobilprog.tadam.mobilprog;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,25 +26,27 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputEmailEditText;
     private EditText passwordEditText;
 
+    private ProgressDialog progressDialog;
 
     // Firebase
-    private FirebaseAuth mfirebaseAuth;
-    private FirebaseAuth.AuthStateListener mfirebaseAuthStateListener;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mFirebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //FirebaseApp.initializeApp(this);
         // Initialize FirebaseAuth
-        mfirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(this);
 
         // Get the component references
         registrationTextView = (TextView) findViewById(R.id.link_signup);
         loginButton = (Button) findViewById(R.id.btn_login);
 
-        mfirebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        mFirebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
@@ -85,13 +87,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "User or password fields are empty", Toast.LENGTH_LONG).show();
         } else {
 
-            mfirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            progressDialog.setMessage("Logging in...");
+            progressDialog.show();
+
+            mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (!task.isSuccessful()) {
                         Log.d("MainActivity", "Error: " + task.getException());
                         Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    } else {
+                        progressDialog.dismiss();
                     }
                 }
             });
@@ -102,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        mfirebaseAuth.addAuthStateListener(mfirebaseAuthStateListener);
+        mFirebaseAuth.addAuthStateListener(mFirebaseAuthStateListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mfirebaseAuth.removeAuthStateListener(mfirebaseAuthStateListener);
+        mFirebaseAuth.removeAuthStateListener(mFirebaseAuthStateListener);
     }
 }
