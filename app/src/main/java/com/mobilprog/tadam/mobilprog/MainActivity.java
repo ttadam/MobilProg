@@ -97,9 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         Log.d("MainActivity", "Error: " + task.getException());
                         Toast.makeText(MainActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    } else {
-                        progressDialog.dismiss();
                     }
+                    progressDialog.dismiss();
                 }
             });
         }
