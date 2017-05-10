@@ -60,7 +60,46 @@ public class AllPeopleListActivity extends AppCompatActivity {
 
         mToolBar.setTitle("Find new friends");
 
-        showUserList();
+        //showUserList();
+    }
+
+    private void initializeScreen() {
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mCurrentUserEmail = mFirebaseAuth.getCurrentUser().getUid().toString();
+        //Eventually this list will filter out users that are already your friend
+        mUserDatabaseReference = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.USER_DB);
+        mCurrentUsersFriends = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.FRIEND_DB
+                + "/" + mFirebaseAuth.getCurrentUser().getUid());//mFirebaseAuth.getCurrentUser().getEmail());
+        // userId alapján kellene friend adatbázist kezelni
+
+        mListView = (ListView) findViewById(R.id.friendsListView);
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        mFriendListAdapter = new FirebaseListAdapter<User>(this, User.class, R.layout.one_person_item, mUserDatabaseReference) {
+            @Override
+            protected void populateView(View view, User model, int position) {
+
+                TextView username = (TextView)view.findViewById(R.id.messageTextView);
+                TextView userEmail = (TextView)view.findViewById(R.id.nameTextView);
+                username.setText(model.getUsername());
+                userEmail.setText(model.getEmail());
+                Log.d("AllPeopleListActivity", "Username: " + username);
+                Log.d("AllPeopleListActivity", "User email: " + userEmail);            }
+        };
+        mListView.setAdapter(mFriendListAdapter);
+
+
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void showUserList() {
@@ -91,11 +130,11 @@ public class AllPeopleListActivity extends AppCompatActivity {
                 //Check if this user is already your friend
                 final DatabaseReference friendRef =
                         mFirebaseDatabase.getReference(MyFirebaseDataBase.FRIEND_DB
-                                + "/" + mCurrentUserEmail + "/" + encodeEmail(email));
+                                + "/" + mCurrentUserEmail + "/" + email);
 
                 if (email.equals(mCurrentUserEmail)) {
-                    view.findViewById(R.id.addFriend).setVisibility(View.GONE);
-                    view.findViewById(R.id.removeFriend).setVisibility(View.GONE);
+                    //view.findViewById(R.id.addFriend).setVisibility(View.GONE);
+                    //view.findViewById(R.id.removeFriend).setVisibility(View.GONE);
                 }
 
                 friendRef.addValueEventListener(new ValueEventListener() {
@@ -103,12 +142,12 @@ public class AllPeopleListActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
                             Log.w(TAG, "User is friend");
-                            view.findViewById(R.id.addFriend).setVisibility(View.GONE);
-                            view.findViewById(R.id.removeFriend).setVisibility(View.VISIBLE);
+                      //      view.findViewById(R.id.addFriend).setVisibility(View.GONE);
+                      //      view.findViewById(R.id.removeFriend).setVisibility(View.VISIBLE);
                         } else {
                             Log.w(TAG, "User is not friend");
-                            view.findViewById(R.id.removeFriend).setVisibility(View.GONE);
-                            view.findViewById(R.id.addFriend).setVisibility(View.VISIBLE);
+                        //    view.findViewById(R.id.removeFriend).setVisibility(View.GONE);
+                        //    view.findViewById(R.id.addFriend).setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -121,7 +160,7 @@ public class AllPeopleListActivity extends AppCompatActivity {
 
                 ((TextView) view.findViewById(R.id.messageTextView)).setText(user.getUsername());
                 ((TextView) view.findViewById(R.id.nameTextView)).setText(email);
-                (view.findViewById(R.id.addFriend)).setOnClickListener(new View.OnClickListener() {
+/*                (view.findViewById(R.id.addFriend)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.w(TAG, "Clicking row: " + position);
@@ -138,7 +177,7 @@ public class AllPeopleListActivity extends AppCompatActivity {
                         //Add this user to your friends list, by email
                         removeFriend(email);
                     }
-                });
+                });*/
             }
         };
 
@@ -167,46 +206,20 @@ public class AllPeopleListActivity extends AppCompatActivity {
         final String userLoggedIn = mFirebaseAuth.getCurrentUser().getEmail();
         Log.e(TAG, "User logged in is: " + userLoggedIn);
         final DatabaseReference friendsRef = mFirebaseDatabase.getReference(MyFirebaseDataBase.FRIEND_DB
-                + "/" + encodeEmail(userLoggedIn));
-        friendsRef.child(encodeEmail(friendEmail)).removeValue();
+                + "/" + userLoggedIn);
+        friendsRef.child(friendEmail).removeValue();
     }
 
     private void addNewFriend(String newFriendEmail) {
         //Get current user logged in by email
-        final String userLoggedIn = mFirebaseAuth.getCurrentUser().getEmail();
+        final String userLoggedIn = mFirebaseAuth.getCurrentUser().getUid();
         Log.e(TAG, "User logged in is: " + userLoggedIn);
         //final String newFriendEncodedEmail = encodeEmail(newFriendEmail);
         final DatabaseReference friendsRef = mFirebaseDatabase.getReference(MyFirebaseDataBase.FRIEND_DB
-                + "/" + encodeEmail(userLoggedIn));
+                + "/" + userLoggedIn);
         //Add friends to current users friends list
-        friendsRef.child(encodeEmail(newFriendEmail)).setValue(newFriendEmail);
+        friendsRef.child(newFriendEmail).setValue(newFriendEmail);
     }
 
-    //TODO: Used in multiple places, should probably move to its own class
-    public static String encodeEmail(String userEmail) {
-        return userEmail.replace(".", ",");
-    }
 
-    private void initializeScreen() {
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mCurrentUserEmail = encodeEmail(mFirebaseAuth.getCurrentUser().getEmail().toString());
-        //Eventually this list will filter out users that are already your friend
-        mUserDatabaseReference = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.USER_DB);
-        mCurrentUsersFriends = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.FRIEND_DB
-                + "/" + encodeEmail(mFirebaseAuth.getCurrentUser().getEmail()));
-
-        mListView = (ListView) findViewById(R.id.friendsListView);
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
 }

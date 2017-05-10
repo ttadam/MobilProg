@@ -43,7 +43,6 @@ public class PartnersActivity extends AppCompatActivity {
     private String activityTitle;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
-    private String mUsername;
     private DatabaseReference mChatDatabaseReference;
     private DatabaseReference mUserDatabaseReference;
     private ListView mChatListView;
@@ -75,7 +74,7 @@ public class PartnersActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
+                getSupportActionBar().setTitle("Menü");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -94,45 +93,58 @@ public class PartnersActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
-        createUser(user);
-        getPartnersAfterSigned(user);
+        //getPartnersAfterSigned(user);
+        //getFriends(user);
 
     }
 
-    private void createUser(FirebaseUser user) {
-        final DatabaseReference usersRef = mFirebaseDatabase.getReference(MyFirebaseDataBase.USER_DB);
-        final String email = User.encodeEmail(user.getEmail());
-        final DatabaseReference userRef = usersRef.child(User.encodeEmail(email));
-        final String username = user.getDisplayName();
 
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    User newUser = new User(username, User.encodeEmail(email));
-                    userRef.setValue(newUser);
-                }
-            }
+    private void getFriends(FirebaseUser user) {
+        DatabaseReference friendsFirebaseDatabase = mFirebaseDatabase.getReference()
+                .child(MyFirebaseDataBase.FRIEND_DB
+                + "/" + User.encodeEmail(user.getEmail()));
+
+        mChatListView = (ListView) findViewById(R.id.partners_listview);
+        mChatAdapter = new FirebaseListAdapter<User>(this, User.class, R.layout.listitem_partners, friendsFirebaseDatabase) {
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            protected void populateView(View view, User user, int position) {
+                TextView nameTextView = (TextView) view.findViewById(R.id.name);
+                String name = user.getUsername();
+                nameTextView.setText(name);
 
+                // TODO: latest message
+                // final TextView latestMessage = (TextView)view.findViewById(R.id.nameTextView);
+
+                ImageView image = (ImageView) view.findViewById(R.id.image);
+
+                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+
+                int color1 = generator.getRandomColor();
+                TextDrawable drawable1 = TextDrawable.builder()
+                        .beginConfig()
+                        .withBorder(4)
+                        .endConfig()
+                        .buildRound(name.substring(0, 1), color1);
+
+                image.setImageDrawable(drawable1);
             }
-        });
+        };
 
-
+        mChatListView.setAdapter(mChatAdapter);
     }
 
     private void getPartnersAfterSigned(FirebaseUser user) {
-        mUsername = user.getDisplayName();
-        mChatDatabaseReference = mFirebaseDatabase.getReference()
+
+  /*      mChatDatabaseReference = mFirebaseDatabase.getReference()
                 .child(MyFirebaseDataBase.USER_DB
                         + "/" + User.encodeEmail(user.getEmail()) + "/"
                         + MyFirebaseDataBase.CHAT_DB );
         mUserDatabaseReference = mFirebaseDatabase.getReference()
-                .child(MyFirebaseDataBase.USER_DB);
+                .child(MyFirebaseDataBase.USER_DB); */
 
-
+        mChatDatabaseReference = mFirebaseDatabase.getReference()
+                .child(MyFirebaseDataBase.FRIEND_DB);
         //Initialize screen variables
         mChatListView = (ListView) findViewById(R.id.partners_listview);
 
@@ -165,16 +177,16 @@ public class PartnersActivity extends AppCompatActivity {
 
         mChatListView.setAdapter(mChatAdapter);
         //Add on click listener to line items
-        mChatListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        mChatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String messageLocation = mChatAdapter.getRef(position).toString();
 
-                if(messageLocation != null){
+                if (messageLocation != null) {
                     Intent intent = new Intent(view.getContext(), MessagesActivity.class);
                     String messageKey = mChatAdapter.getRef(position).getKey();
                     intent.putExtra(MyFirebaseDataBase.MESSAGE_ID, messageKey);
-                    Chat chatItem = (Chat)mChatAdapter.getItem(position);
+                    Chat chatItem = (Chat) mChatAdapter.getItem(position);
                     intent.putExtra(MyFirebaseDataBase.CHAT_ID, chatItem.getChatName());
                     startActivity(intent);
                 }
@@ -245,7 +257,7 @@ public class PartnersActivity extends AppCompatActivity {
                     newScreen = new Intent(PartnersActivity.this, PartnersActivity.class);
                     break;
                 case 2:
-                   newScreen = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
+                    newScreen = new Intent(PartnersActivity.this, AllPeopleListActivity.class);
                     break;
                 case 3:
                     FirebaseAuth.getInstance().signOut();

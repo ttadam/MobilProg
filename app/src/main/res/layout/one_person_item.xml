@@ -1,74 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/friendRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingBottom="10dp"
-    android:weightSum="100"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp"
-    android:orientation="horizontal">
+    android:paddingLeft="20dp"
+    android:paddingTop="10dp">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/photoImageView"
-        android:layout_width="0dp"
-        android:layout_weight="15"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_launcher" />
 
-    <LinearLayout
-        android:layout_weight="60"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:weightSum="100">
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/messageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/photoImageView"
+        android:layout_toRightOf="@+id/photoImageView"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:textStyle="normal|bold"
+        tools:text="Message" />
 
-        <TextView
-            android:id="@+id/messageTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="Message"
-            android:textStyle="normal|bold"
-            android:textSize="18sp" />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageTextView"
+        android:layout_toEndOf="@+id/photoImageView"
+        android:layout_toRightOf="@+id/photoImageView"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp"
+        android:layout_marginLeft="10dp"
+        tools:text="Name" />
 
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:text="Name"
-            android:textSize="12sp" />
+    <android.support.v7.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight="20"
-        android:layout_height="match_parent"
-        android:layout_width="0dp">
-
-        <Button
-            android:id="@+id/addFriend"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimaryDark"
-            android:layout_width="50dp"
-            android:layout_marginRight="8dp"
-            android:layout_height="50dp" />
-
-        <Button
-            android:id="@+id/removeFriend"
-            android:background="@color/authui_colorPrimary"
-            android:layout_gravity="center"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>
