@@ -46,7 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         registButton = (Button) findViewById(R.id.btn_regist);
-        inputUsernameEditText = (EditText) findViewById(R.id.input_username);
+        inputUsernameEditText = (EditText) findViewById(R.id.username_input);
         inputEmailEditText = (EditText) findViewById(R.id.input_email);
         passwordEditText = (EditText) findViewById(R.id.input_password);
 

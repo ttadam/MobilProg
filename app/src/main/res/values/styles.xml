@@ -18,7 +18,7 @@
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppThemeNoAcBar.NoActionBar">
+    <style name="AppThemeNoAcBar.NoActionBar"> //TODO: Srácok ezt stylet hol használjuk?
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

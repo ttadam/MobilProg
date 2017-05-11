@@ -3,10 +3,13 @@ package com.mobilprog.tadam.mobilprog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +57,9 @@ public class PartnersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partners);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -61,6 +67,19 @@ public class PartnersActivity extends AppCompatActivity {
         optionsTitles = getResources().getStringArray(R.array.options_array);
         drawerList = (ListView) findViewById(R.id.left_drawer);
         activityTitle = getTitle().toString();
+
+
+       //ez itt egy tabos tutorialból van, innen:
+        // https://github.com/codepath/android_guides/wiki/Google-Play-Style-Tabs-using-TabLayout
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                PartnersActivity.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
 
         // Set the adapter for the list view
         drawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -104,6 +123,7 @@ public class PartnersActivity extends AppCompatActivity {
                 .child(MyFirebaseDataBase.FRIEND_DB
                 + "/" + User.encodeEmail(user.getEmail()));
 
+        /*
         mChatListView = (ListView) findViewById(R.id.partners_listview);
         mChatAdapter = new FirebaseListAdapter<User>(this, User.class, R.layout.listitem_partners, friendsFirebaseDatabase) {
 
@@ -132,6 +152,7 @@ public class PartnersActivity extends AppCompatActivity {
         };
 
         mChatListView.setAdapter(mChatAdapter);
+        */
     }
 
     private void getPartnersAfterSigned(FirebaseUser user) {
@@ -146,6 +167,7 @@ public class PartnersActivity extends AppCompatActivity {
         mChatDatabaseReference = mFirebaseDatabase.getReference()
                 .child(MyFirebaseDataBase.FRIEND_DB);
         //Initialize screen variables
+        /*
         mChatListView = (ListView) findViewById(R.id.partners_listview);
 
         mChatAdapter = new FirebaseListAdapter<Chat>(this, Chat.class, R.layout.listitem_partners, mChatDatabaseReference) {
@@ -212,6 +234,8 @@ public class PartnersActivity extends AppCompatActivity {
 
             }
         });
+
+        */
     }
 
     @Override

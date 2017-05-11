@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".PartnersActivity"
-            android:label="Partners" />
+            android:label="Partners"
+            android:theme="@style/AppThemeNoAcBar"/>
         <activity
             android:name=".RegistrationActivity"
             android:label="Registration"
