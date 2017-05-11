@@ -6,6 +6,7 @@ package com.mobilprog.tadam.mobilprog.Model;
 
 public class User {
 
+    private String uid;
     private String username;
     private String email;
 
@@ -13,7 +14,8 @@ public class User {
 
     }
 
-    public User(String username, String email) {
+    public User(String uid ,String username, String email) {
+        this.uid = uid;
         this.username = username;
         this.email = email;
     }
@@ -25,6 +27,8 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public String getUid() { return uid; }
 
     public static String encodeEmail(String userEmail) {
         return userEmail.replace(".", ",");

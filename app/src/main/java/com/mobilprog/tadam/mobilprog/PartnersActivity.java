@@ -94,7 +94,7 @@ public class PartnersActivity extends AppCompatActivity {
 
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         //getPartnersAfterSigned(user);
-        //getFriends(user);
+        getFriends(user);
 
     }
 
@@ -102,7 +102,7 @@ public class PartnersActivity extends AppCompatActivity {
     private void getFriends(FirebaseUser user) {
         DatabaseReference friendsFirebaseDatabase = mFirebaseDatabase.getReference()
                 .child(MyFirebaseDataBase.FRIEND_DB
-                + "/" + User.encodeEmail(user.getEmail()));
+                + "/" + user.getUid());
 
         mChatListView = (ListView) findViewById(R.id.partners_listview);
         mChatAdapter = new FirebaseListAdapter<User>(this, User.class, R.layout.listitem_partners, friendsFirebaseDatabase) {
@@ -112,9 +112,6 @@ public class PartnersActivity extends AppCompatActivity {
                 TextView nameTextView = (TextView) view.findViewById(R.id.name);
                 String name = user.getUsername();
                 nameTextView.setText(name);
-
-                // TODO: latest message
-                // final TextView latestMessage = (TextView)view.findViewById(R.id.nameTextView);
 
                 ImageView image = (ImageView) view.findViewById(R.id.image);
 

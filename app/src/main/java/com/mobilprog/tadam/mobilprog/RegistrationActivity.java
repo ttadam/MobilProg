@@ -79,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         String userId = mFirebaseAuth.getCurrentUser().getUid();
                         DatabaseReference currentUser = mDatabaseReference.child(userId);
-                        User user = new User(username, email);
+                        User user = new User(userId, username, email);
                         currentUser.setValue(user);
 
                         progressDialog.dismiss();
