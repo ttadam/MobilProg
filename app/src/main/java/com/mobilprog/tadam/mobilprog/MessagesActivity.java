@@ -1,37 +1,26 @@
 package com.mobilprog.tadam.mobilprog;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
 import com.mobilprog.tadam.mobilprog.Model.Message;
 import com.mobilprog.tadam.mobilprog.Model.User;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessagesActivity extends AppCompatActivity {
     private EditText messagesToSend;
@@ -39,12 +28,12 @@ public class MessagesActivity extends AppCompatActivity {
     private ListView messagesList;
     private Toolbar mToolBar;
     private String currentUserEmail;
+    private MessageAdapter mMessageListAdapter;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessageDatabaseReference;
-    private DatabaseReference mUsersDatabaseReference;
-    private FirebaseListAdapter<Message> mMessageListAdapter;
     private FirebaseAuth mFirebaseAuth;
+    private ChildEventListener mChildEventListener;
 
 
     @Override
@@ -53,8 +42,8 @@ public class MessagesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_messages);
 
         User selectedUser = null;
-        
-        if (getIntent().getExtras()!=null){
+
+        if (getIntent().getExtras() != null) {
             Bundle args = getIntent().getExtras();
             if (args.containsKey("selected_partner"))
                 selectedUser = args.getParcelable("selected_partner");
@@ -69,6 +58,9 @@ public class MessagesActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         messagesList = (ListView) findViewById(R.id.messageListView);
+        List<Message> messages = new ArrayList<>();
+        mMessageListAdapter = new MessageAdapter(this, R.layout.one_message_item, messages);
+        messagesList.setAdapter(mMessageListAdapter);
         messagesToSend = (EditText) findViewById(R.id.messageToSend);
         sendButton = (ImageButton) findViewById(R.id.sendButton);
 
@@ -76,13 +68,46 @@ public class MessagesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Message sendingMessage = new Message(mFirebaseAuth.getCurrentUser().getDisplayName(), messagesToSend.getText().toString());
+                Message sendingMessage = new Message(mFirebaseAuth.getCurrentUser().getEmail(), messagesToSend.getText().toString());
                 mMessageDatabaseReference.push().setValue(sendingMessage);
 
                 messagesToSend.setText("");
             }
         });
 
+        mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot != null) {
+                    Message message = dataSnapshot.getValue(Message.class);
+                    mMessageListAdapter.add(message);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        mMessageDatabaseReference.addChildEventListener(mChildEventListener);
+    }
+}
 
 
      /*   Intent intent = this.getIntent();
@@ -103,9 +128,8 @@ public class MessagesActivity extends AppCompatActivity {
         mToolBar.setTitle(chatName);
         showMessages();
         addListeners();*/
-    }
 
-    public void addListeners() {
+ /*   public void addListeners() {
         messagesToSend.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -154,7 +178,7 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
 
-    private void showMessages() {
+/*    private void showMessages() {
         mMessageListAdapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.one_message_item, mMessageDatabaseReference) {
             @Override
             protected void populateView(final View view, final Message message, final int position) {
@@ -199,9 +223,9 @@ public class MessagesActivity extends AppCompatActivity {
             }
         };
         messagesList.setAdapter(mMessageListAdapter);
-    }
+    }*/
 
-    private void initializeScreen() {
+  /*  private void initializeScreen() {
         messagesList = (ListView) findViewById(R.id.messageListView);
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
         messagesToSend = (EditText) findViewById(R.id.messageToSend);
@@ -223,14 +247,8 @@ public class MessagesActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    //TODO: Used in multiple places, should probably move to its own class
-    public String encodeEmail(String userEmail) {
-        return userEmail.replace(".", ",");
-    }
-
-}
+    }/*
+*/
 
 
 

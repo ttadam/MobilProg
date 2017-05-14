@@ -7,7 +7,6 @@ package com.mobilprog.tadam.mobilprog.Model;
 public class Message {
     private String sender;
     private String message;
-    private Boolean multimedia = false;
 
     public Message() {
 
