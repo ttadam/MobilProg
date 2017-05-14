@@ -42,11 +42,7 @@
                 android:background="@android:color/white" />
 
             <!-- Ezt a list view-t majd egy fragmentbe ki kell szervezni
-            <ListView
-
-                android:id="@+id/partners_listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" /> -->
+             -->
 
 
         </LinearLayout>
