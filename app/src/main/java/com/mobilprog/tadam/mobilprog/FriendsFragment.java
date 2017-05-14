@@ -1,5 +1,6 @@
 package com.mobilprog.tadam.mobilprog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
+import com.mobilprog.tadam.mobilprog.Model.Message;
+import com.mobilprog.tadam.mobilprog.Model.Partners;
+import com.mobilprog.tadam.mobilprog.Model.ThumbnailGenerator;
 import com.mobilprog.tadam.mobilprog.Model.User;
 
 /**
@@ -32,9 +37,12 @@ public class FriendsFragment extends Fragment{
     private FirebaseAuth mFirebaseAuth;
     private ListView mChatListView;
     private FirebaseListAdapter mChatAdapter;
+    private View rootView;
 
     public static FriendsFragment newInstance() {
+        Bundle args = new Bundle();
         FriendsFragment fragment = new FriendsFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -42,19 +50,24 @@ public class FriendsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(
+        rootView = inflater.inflate(
                 R.layout.fragment_partners, container, false);
 
-        mChatListView = (ListView)rootView.findViewById(R.id.partners_listview);
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-
-
-        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-        getFriends(user);
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mChatListView = (ListView)rootView.findViewById(R.id.partners_listview);
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        getFriends(user);
+    }
 
     private void getFriends(FirebaseUser user) {
         DatabaseReference friendsFirebaseDatabase = mFirebaseDatabase.getReference()
@@ -71,20 +84,21 @@ public class FriendsFragment extends Fragment{
 
                 ImageView image = (ImageView) view.findViewById(R.id.image);
 
-                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+                TextDrawable drawable = ThumbnailGenerator.generateMaterial(name);
 
-                int color1 = generator.getRandomColor();
-                TextDrawable drawable1 = TextDrawable.builder()
-                        .beginConfig()
-                        .withBorder(4)
-                        .endConfig()
-                        .buildRound(name.substring(0, 1), color1);
-
-                image.setImageDrawable(drawable1);
+                image.setImageDrawable(drawable);
             }
         };
 
         mChatListView.setAdapter(mChatAdapter);
-
+        mChatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                User selectedPartner = (User) mChatAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), MessagesActivity.class);
+                intent.putExtra("selected_partner", selectedPartner);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -11,8 +11,6 @@
     <include
         layout="@layout/toolbar"
         android:id="@+id/toolbar">
-
-
     </include>
 
     <android.support.v4.widget.DrawerLayout
@@ -66,16 +64,6 @@
 
 
     </android.support.v4.widget.DrawerLayout>
-
-
-
-
-
-
-
-
-
-
 
 
 </RelativeLayout>

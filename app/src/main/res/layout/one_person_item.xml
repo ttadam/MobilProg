@@ -11,20 +11,22 @@
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/photoImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/photoImageView"
         android:layout_toRightOf="@+id/photoImageView"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="18sp"
-        android:layout_marginLeft="10dp"
         android:textStyle="normal|bold"
         tools:text="Message" />
 
@@ -33,11 +35,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/messageTextView"
+        android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/photoImageView"
         android:layout_toRightOf="@+id/photoImageView"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="12sp"
-        android:layout_marginLeft="10dp"
         tools:text="Name" />
 
     <android.support.v7.widget.SwitchCompat

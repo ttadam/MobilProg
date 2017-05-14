@@ -1,6 +1,5 @@
 package com.mobilprog.tadam.mobilprog;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
 import com.mobilprog.tadam.mobilprog.Model.Message;
-import com.mobilprog.tadam.mobilprog.Model.Partners;
+import com.mobilprog.tadam.mobilprog.Model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,11 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessagesActivity extends AppCompatActivity {
-    private String messageId;
-    private TextView mMessageField;
-    private ImageButton mSendButton;
-    private String chatName;
-    private ListView mMessageList;
+    private EditText messagesToSend;
+    private ImageButton sendButton;
+    private ListView messagesList;
     private Toolbar mToolBar;
     private String currentUserEmail;
 
@@ -49,15 +47,45 @@ public class MessagesActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
 
 
-    private ValueEventListener mValueEventListener;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        Intent intent = this.getIntent();
+        User selectedUser = null;
+        
+        if (getIntent().getExtras()!=null){
+            Bundle args = getIntent().getExtras();
+            if (args.containsKey("selected_partner"))
+                selectedUser = args.getParcelable("selected_partner");
+        }
+
+        if (selectedUser != null)
+            setTitle(selectedUser.getUsername());
+
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mMessageDatabaseReference = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.MESSAGE_DB);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        messagesList = (ListView) findViewById(R.id.messageListView);
+        messagesToSend = (EditText) findViewById(R.id.messageToSend);
+        sendButton = (ImageButton) findViewById(R.id.sendButton);
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Message sendingMessage = new Message(mFirebaseAuth.getCurrentUser().getDisplayName(), messagesToSend.getText().toString());
+                mMessageDatabaseReference.push().setValue(sendingMessage);
+
+                messagesToSend.setText("");
+            }
+        });
+
+
+
+     /*   Intent intent = this.getIntent();
         //MessageID is the location of the messages for this specific chat
         messageId = intent.getStringExtra(MyFirebaseDataBase.MESSAGE_ID);
         chatName = intent.getStringExtra(MyFirebaseDataBase.CHAT_ID);
@@ -74,11 +102,11 @@ public class MessagesActivity extends AppCompatActivity {
         initializeScreen();
         mToolBar.setTitle(chatName);
         showMessages();
-        addListeners();
+        addListeners();*/
     }
 
     public void addListeners() {
-        mMessageField.addTextChangedListener(new TextWatcher() {
+        messagesToSend.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -86,9 +114,9 @@ public class MessagesActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
-                    mSendButton.setEnabled(true);
+                    sendButton.setEnabled(true);
                 } else {
-                    mSendButton.setEnabled(false);
+                    sendButton.setEnabled(false);
                 }
             }
 
@@ -104,13 +132,13 @@ public class MessagesActivity extends AppCompatActivity {
         final DatabaseReference pushRef = mMessageDatabaseReference.push();
         final String pushKey = pushRef.getKey();
 
-        String messageString = mMessageField.getText().toString();
+        String messageString = messagesToSend.getText().toString();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
         String timestamp = dateFormat.format(date);
         //Create message object with text/voice etc
-        Message message = new Message(encodeEmail(mFirebaseAuth.getCurrentUser().getEmail()), messageString, timestamp);
+        Message message = new Message(encodeEmail(mFirebaseAuth.getCurrentUser().getDisplayName()), messageString);
         //Create HashMap for Pushing
         HashMap<String, Object> messageItemMap = new HashMap<String, Object>();
         HashMap<String, Object> messageObj = (HashMap<String, Object>) new ObjectMapper()
@@ -120,7 +148,7 @@ public class MessagesActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        mMessageField.setText("");
+                        messagesToSend.setText("");
                     }
                 });
     }
@@ -170,23 +198,22 @@ public class MessagesActivity extends AppCompatActivity {
                 }
             }
         };
-        mMessageList.setAdapter(mMessageListAdapter);
+        messagesList.setAdapter(mMessageListAdapter);
     }
 
     private void initializeScreen() {
-        mMessageList = (ListView) findViewById(R.id.messageListView);
+        messagesList = (ListView) findViewById(R.id.messageListView);
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        mMessageField = (TextView) findViewById(R.id.messageToSend);
-        mSendButton = (ImageButton) findViewById(R.id.sendButton);
+        messagesToSend = (EditText) findViewById(R.id.messageToSend);
+        sendButton = (ImageButton) findViewById(R.id.sendButton);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUserEmail = encodeEmail(mFirebaseAuth.getCurrentUser().getEmail());
         mUsersDatabaseReference = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.USER_DB);
         mMessageDatabaseReference = mFirebaseDatabase.getReference().child(MyFirebaseDataBase.MESSAGE_DB
-                + "/" + messageId);
+                + "/");
 
-        mToolBar.setTitle(chatName);
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
