@@ -29,10 +29,10 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new FriendsFragment();
+                fragment = FriendsFragment.newInstance();
                 break;
             case 1:
-                fragment = new PageFragment();
+                fragment = PageFragment.newInstance();
         }
         return fragment;
     } //ide kell egy switch

@@ -31,39 +31,36 @@ public class FriendsFragment extends Fragment{
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
     private ListView mChatListView;
-    private View view;
     private FirebaseListAdapter mChatAdapter;
+
+    public static FriendsFragment newInstance() {
+        FriendsFragment fragment = new FriendsFragment();
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_partners, container, false);
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        View rootView = inflater.inflate(
+                R.layout.fragment_partners, container, false);
 
-        view = getView();
-
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-
+        mChatListView = (ListView)rootView.findViewById(R.id.partners_listview);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
 
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         getFriends(user);
+        return rootView;
     }
+
 
     private void getFriends(FirebaseUser user) {
         DatabaseReference friendsFirebaseDatabase = mFirebaseDatabase.getReference()
                 .child(MyFirebaseDataBase.FRIEND_DB
                         + "/" + user.getUid());
 
-
-        mChatListView = (ListView)view.findViewById(R.id.partners_listview);
         mChatAdapter = new FirebaseListAdapter<User>(getActivity(), User.class, R.layout.listitem_partners, friendsFirebaseDatabase) {
 
             @Override
