@@ -26,7 +26,15 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position + 1);
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = new FriendsFragment();
+                break;
+            case 1:
+                fragment = new PageFragment();
+        }
+        return fragment;
     } //ide kell egy switch
 
     @Override

@@ -48,8 +48,6 @@ public class PartnersActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mChatDatabaseReference;
     private DatabaseReference mUserDatabaseReference;
-    private ListView mChatListView;
-    private FirebaseListAdapter mChatAdapter;
     private ValueEventListener mValueEventListener;
 
     @Override
