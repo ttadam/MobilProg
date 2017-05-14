@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by I327221 on 2017. 05. 11..
  */
 
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class TyprFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "Friends", "Chats" };
+    private String tabTitles[] = new String[] { "Friends", "Messages" };
     private Context context;
 
-    public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public TyprFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
@@ -32,7 +32,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = FriendsFragment.newInstance();
                 break;
             case 1:
-                fragment = PageFragment.newInstance();
+                fragment = MessagesFragment.newInstance();
         }
         return fragment;
     } //ide kell egy switch

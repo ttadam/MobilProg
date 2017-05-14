@@ -11,14 +11,10 @@ import android.widget.TextView;
  * Created by I327221 on 2017. 05. 11..
  */
 
-// In this case, the fragment displays simple text based on the page
-public class PageFragment extends Fragment {
-    public static final String ARG_PAGE = "ARG_PAGE";
+public class MessagesFragment extends Fragment {
 
-    private int mPage;
-
-    public static PageFragment newInstance() {
-        PageFragment fragment = new PageFragment();
+    public static MessagesFragment newInstance() {
+        MessagesFragment fragment = new MessagesFragment();
         return fragment;
     }
 

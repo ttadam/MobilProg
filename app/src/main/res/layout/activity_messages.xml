@@ -24,13 +24,13 @@
         android:id="@+id/messageListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/sendButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:transcriptMode="alwaysScroll"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="1dp"
-        android:transcriptMode="alwaysScroll"
-        tools:listitem="@layout/one_message_item"
-        android:layout_above="@+id/sendButton" />
+        tools:listitem="@layout/one_message_item" />
 
 
     <EditText

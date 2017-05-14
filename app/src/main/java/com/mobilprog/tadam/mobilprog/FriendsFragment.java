@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobilprog.tadam.mobilprog.Firebase.MyFirebaseDataBase;
+import com.mobilprog.tadam.mobilprog.Model.ThumbnailGenerator;
 import com.mobilprog.tadam.mobilprog.Model.User;
 
 /**
@@ -71,16 +72,9 @@ public class FriendsFragment extends Fragment{
 
                 ImageView image = (ImageView) view.findViewById(R.id.image);
 
-                ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+                TextDrawable drawable = ThumbnailGenerator.generateMaterial(name);
 
-                int color1 = generator.getRandomColor();
-                TextDrawable drawable1 = TextDrawable.builder()
-                        .beginConfig()
-                        .withBorder(4)
-                        .endConfig()
-                        .buildRound(name.substring(0, 1), color1);
-
-                image.setImageDrawable(drawable1);
+                image.setImageDrawable(drawable);
             }
         };
 
