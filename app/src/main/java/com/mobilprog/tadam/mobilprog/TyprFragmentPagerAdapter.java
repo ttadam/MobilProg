@@ -32,7 +32,7 @@ public class TyprFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = FriendsFragment.newInstance();
                 break;
             case 1:
-                fragment = MessagesFragment.newInstance();
+                fragment = LastConversationsFragment.newInstance();
         }
         return fragment;
     } //ide kell egy switch
