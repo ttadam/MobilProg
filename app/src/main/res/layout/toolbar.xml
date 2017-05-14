@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:id="@+id/toolbar"
+    android:textColor="@android:color/white"
     android:titleTextColor="@android:color/white">
-
 
     <!--
     <android.support.v7.widget.AppCompatImageView

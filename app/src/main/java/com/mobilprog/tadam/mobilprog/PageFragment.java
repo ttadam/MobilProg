@@ -32,7 +32,7 @@ public class PageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView textView = (TextView) view;
-        textView.setText("Fragment #");
+        textView.setText("Fragment 2");
         return view;
     }
 }

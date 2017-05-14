@@ -42,7 +42,7 @@ public class PartnersActivity extends AppCompatActivity {
     private String[] optionsTitles;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
-    private ActionBarDrawerToggle drawerToggle;
+    private android.support.v7.app.ActionBarDrawerToggle drawerToggle;
     private String activityTitle;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
@@ -57,6 +57,7 @@ public class PartnersActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(android.graphics.Color.WHITE); //TODO: ez itt nagyon csúnya, de nem tudom hogy lehetne szebben :(
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -91,7 +92,6 @@ public class PartnersActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Menü");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
