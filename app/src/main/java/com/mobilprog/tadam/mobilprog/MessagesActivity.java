@@ -79,9 +79,12 @@ public class MessagesActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot != null) {
                     Message message = dataSnapshot.getValue(Message.class);
-                    
+
                     if (message.getReceiver().equals(selectedUser.getEmail()) &&
-                            message.getSender().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                            message.getSender().equals(mFirebaseAuth.getCurrentUser().getEmail())
+                            ||
+                            message.getReceiver().equals(mFirebaseAuth.getCurrentUser().getEmail()) &&
+                            message.getSender().equals(selectedUser.getEmail()))
                         mMessageListAdapter.add(message);
                 }
             }
