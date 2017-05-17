@@ -38,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+
         // Init firebase auth and database references
         mFirebaseAuth = FirebaseAuth.getInstance();
         // Databasereference to the child users of the root

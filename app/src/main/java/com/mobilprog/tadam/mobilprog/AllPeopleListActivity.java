@@ -35,7 +35,6 @@ public class AllPeopleListActivity extends AppCompatActivity {
     private String TAG = "Friends List Activity";
 
     private ListView mListView;
-    private Toolbar mToolBar;
     private TextView usernameTextView;
     private TextView emailTextView;
     private ImageView photoImageView;
@@ -58,7 +57,12 @@ public class AllPeopleListActivity extends AppCompatActivity {
         initializeScreen();
         showAppUserList();
 
-        mToolBar.setTitle("Find new friends");
+
+
+
+
+
+
 
     }
 
@@ -72,12 +76,16 @@ public class AllPeopleListActivity extends AppCompatActivity {
                 + "/" + mCurrentUserId);//mFirebaseAuth.getCurrentUser().getEmail());
 
         mListView = (ListView) findViewById(R.id.friendsListView);
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(mToolBar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(android.graphics.Color.WHITE);
+        toolbar.setTitle("Find new friends");
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

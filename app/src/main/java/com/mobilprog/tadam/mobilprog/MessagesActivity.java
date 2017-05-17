@@ -2,7 +2,7 @@ package com.mobilprog.tadam.mobilprog;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +26,7 @@ public class MessagesActivity extends AppCompatActivity {
     private EditText messagesToSend;
     private ImageButton sendButton;
     private ListView messagesList;
+    private String currentUserEmail;
     private MessageAdapter mMessageListAdapter;
     private User selectedUser;
 
@@ -39,6 +40,10 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(android.graphics.Color.WHITE);
+
 
         selectedUser = null;
 
@@ -48,8 +53,12 @@ public class MessagesActivity extends AppCompatActivity {
                 selectedUser = args.getParcelable("selected_partner");
         }
 
-        if (selectedUser != null)
-            setTitle(selectedUser.getUsername());
+            if (selectedUser != null){
+
+            toolbar.setTitle(selectedUser.getUsername());
+        }
+
+
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();

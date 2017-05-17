@@ -18,6 +18,7 @@
         android:theme="@style/AppThemeMain">
         <activity
             android:name=".MainActivity"
+
             android:theme="@style/AppThemeNoAcBar"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -26,23 +27,26 @@
             </intent-filter>
         </activity>
         <activity
+
             android:name=".PartnersActivity"
             android:theme="@style/AppThemeNoAcBar"/>
         <activity
+            android:theme="@style/Regstyle"
             android:name=".RegistrationActivity"
             android:label="Registration"
-            android:theme="@style/AppThemeNoAcBar"
             android:windowSoftInputMode="stateHidden"/>
         <activity
+
             android:name=".MessagesActivity"
+            android:theme="@style/AppThemeNoAcBar"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
+
             android:name=".AllPeopleListActivity"
             android:label="Find Friends"
             android:theme="@style/AppThemeNoAcBar.NoActionBar">
 
         </activity>
-
     </application>
 
 </manifest>
