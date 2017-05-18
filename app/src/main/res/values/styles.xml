@@ -35,7 +35,6 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-
     <style name="Regstyle" parent="AppThemeNoAcBar">
         <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:windowAnimationStyle">@null</item>
